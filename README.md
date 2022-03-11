@@ -4,3 +4,4 @@ Tennis Club API
 - postgres as our database
 
 
+pip install psycopg2-binary 
