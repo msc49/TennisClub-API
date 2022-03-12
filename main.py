@@ -12,6 +12,9 @@ class Player(BaseModel): #serializer
   nationality: str
   player_score: int
 
+  class Config:
+    orm_model = True
+
 
 
 
