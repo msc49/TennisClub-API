@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import datetime
+from database import SessionLocal
+from typing import List
+import models
 
 app = FastAPI()
 
@@ -16,11 +19,12 @@ class Player(BaseModel): #serializer
     orm_model = True
 
 
+db = SessionLocal()
 
-
-@app.get("/")
+@app.get("/", response_model=List[Player],status_code=200)
 def get_players():
-  pass
+  players = db.query(models.Player).all()
+  return players
 
 @app.get("/players/{player_id}")
 def get_a_player(player_id: int):
