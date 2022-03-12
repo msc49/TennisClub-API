@@ -17,7 +17,7 @@ class Player(BaseModel):
 
 while True: #our server cannot do anything until it connects to database so we use a while loop to continously trying to connect it it
   try: 
-    conn = psycopg2.connect(database='tennis-club', cursor_factory=RealDictCursor) #real dict cursor gives you the column names too of the database
+    conn = psycopg2.connect(host='localhost', database='tennis-club', user='Shahzaib', cursor_factory=RealDictCursor) #real dict cursor gives you the column names too of the database
     cursor = conn.cursor()
     print('Database Connection was successful')
     break
@@ -26,4 +26,19 @@ while True: #our server cannot do anything until it connects to database so we u
     print('Database connection FAILED')
     print("Error: ", error)
     time.sleep(5)
+
+
+@TennisClub.get("/")
+def get_players(player: Player):
+  cursor.execute(""" SELECT * FROM players  """)
+  players = cursor.fetchall()
+  return {"data": players}
+
+
+@TennisClub.post("./players")
+def create_player(player: Player):
+  cursor.execute(""" INSERT INTO players (first_name, last_name, date_of_birth, nationality) VALUES (%s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.date_of_birth, player.nationality))
+  # did not use f strings because that leaves us vulnerable to SQL injection
+  new_player = cursor.fetchone()
+  return {"data": new_player}
   
