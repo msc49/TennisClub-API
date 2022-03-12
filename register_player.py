@@ -7,7 +7,7 @@ import time
 
 # since we will need our data to be persistent, we will use Postgres as our database
 
-TennisClub = FastAPI()
+app = FastAPI()
 
 class Player(BaseModel):
   first_name: str
@@ -28,14 +28,14 @@ while True: #our server cannot do anything until it connects to database so we u
     time.sleep(5)
 
 
-@TennisClub.get("/")
+@app.get("/")
 def get_players(player: Player):
   cursor.execute(""" SELECT * FROM players  """)
   players = cursor.fetchall()
   return {"data": players}
 
 
-@TennisClub.post("./players")
+@app.post("./players")
 def create_player(player: Player):
   cursor.execute(""" INSERT INTO players (first_name, last_name, date_of_birth, nationality) VALUES (%s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.date_of_birth, player.nationality))
   # did not use f strings because that leaves us vulnerable to SQL injection
