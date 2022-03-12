@@ -7,3 +7,5 @@ Tennis Club API
 pip install psycopg2-binary 
 
 uvicorn register_player:TennisClub  --reload
+
+pip install sqlalchemy
