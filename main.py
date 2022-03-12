@@ -20,7 +20,25 @@ class Player(BaseModel): #serializer
 
 @app.get("/")
 def get_players():
-  return {"message": "Hello World"}
+  pass
+
+@app.get("/players/{player_id}")
+def get_a_player(player_id: int):
+  pass
+
+
+@app.post('/players')
+def create_player():
+  pass
+
+@app.put("/players/{player_id}")
+def update_player(player_id: int):
+  pass
+
+@app.delete("/players/{player_id}")
+def delete_player(player_id: int):
+  pass
+
 
 
 
