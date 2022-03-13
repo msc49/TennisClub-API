@@ -16,7 +16,8 @@ class Player(BaseModel): #serializer
   last_name: str
   nationality: str
   age: int
-  points: int
+  # points: int
+  # games_played: int
   
   
 conn = psycopg2.connect(host='localhost', database='tennis_club', user='Shahzaib', cursor_factory=RealDictCursor) #real dict cursor gives you the column names too of the database
@@ -31,7 +32,7 @@ def get_players(player: Player):
   players = cursor.fetchall()
   return {"data": players}
 
-
+# --------------------------- ENDPOINT 1 ------------------------------------------------------------
 @app.post('/players',status_code=status.HTTP_201_CREATED)
 def create_player(player: Player):
   cursor.execute(""" INSERT INTO players (first_name, last_name, age, nationality) VALUES (%s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.age, player.nationality))
@@ -40,5 +41,5 @@ def create_player(player: Player):
   new_player = cursor.fetchone()
   return {"data": new_player}
 
-
+# ----------------------------- ------------------------------------------------------------
 

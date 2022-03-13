@@ -7,6 +7,7 @@ CREATE TABLE players (player serial PRIMARY KEY,
   age INT NOT NULL,
   check(age >= 16),
   nationality VARCHAR (50) NOT NULL,
-  player_score INT DEFAULT 1200
+  player_score INT DEFAULT 1200,
+  games_played INT DEFAULT 0
 
 );
