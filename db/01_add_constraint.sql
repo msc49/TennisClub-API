@@ -9,5 +9,10 @@ CREATE TABLE players (player serial PRIMARY KEY,
   nationality VARCHAR (50) NOT NULL,
   player_score INT DEFAULT 1200,
   games_played INT DEFAULT 0
+  
 
 );
+
+ALTER TABLE players ADD rank_name VARCHAR(50) NULL;
+
+

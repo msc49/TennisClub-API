@@ -52,3 +52,12 @@ def get_players_by_nationality(nationality: str, players: Player):
   cursor.execute(""" SELECT * FROM players WHERE nationality = %s  """, (str(nationality), ))
   national_players = cursor.fetchall()
   return {"nationality": national_players}
+
+# GETTING PLAYERS BY RANK NAME
+@app.get('/players/rank/{rank_name}')
+def get_players_by_nationality(rank_name: str, players: Player):
+  cursor.execute(open("./db/03_update_table.sql", "r").read()) #updates our table so the rank_name goes from NULL to whatever is required
+  conn.commit() #save changes
+  cursor.execute(""" SELECT * FROM players WHERE rank_name = %s  """, (str(rank_name), ))
+  national_players = cursor.fetchall()
+  return {"{rank_name}": national_players}

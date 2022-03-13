@@ -11,3 +11,6 @@ uvicorn main:app  --reload
 pip install sqlalchemy
 
 \i ./db/01_add_constraint.sql
+
+
+filter through games played >=3 for rank then do unranked players
