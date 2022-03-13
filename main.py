@@ -26,14 +26,17 @@ print('Database Connection was successful')
   
 
 @app.get('/')
-def get_all():
-  return {"message": "hello world"}
+def get_players(player: Player):
+  cursor.execute(""" SELECT * FROM players  """)
+  players = cursor.fetchall()
+  return {"data": players}
 
 
 @app.post('/players',status_code=status.HTTP_201_CREATED)
 def create_player(player: Player):
   cursor.execute(""" INSERT INTO players (first_name, last_name, age, nationality) VALUES (%s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.age, player.nationality))
   # did not use f strings because that leaves us vulnerable to SQL injection
+  conn.commit()
   new_player = cursor.fetchone()
   return {"data": new_player}
 
