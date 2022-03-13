@@ -17,7 +17,9 @@
 
 CREATE TABLE matches(match serial PRIMARY KEY,
 winner_id INT REFERENCES players(player),
-loser_id INT  REFERENCES players(player)
+winner_name VARCHAR(50) REFERENCES players(first_name),
+loser_id INT  REFERENCES players(player),
+loser_name VARCHAR(50) REFERENCES players(first_name),
 
 );
 
