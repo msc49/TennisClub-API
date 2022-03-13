@@ -43,3 +43,12 @@ def create_player(player: Player):
 
 # ----------------------------- ------------------------------------------------------------
 
+# --------------------------- ENDPOINT 2 ------------------------------------------------------------
+
+# GETTING PLAYERS BY NATIONALITY
+
+@app.get('/players/{nationality}')
+def get_players_by_nationality(nationality: str, players: Player):
+  cursor.execute(""" SELECT * FROM players WHERE nationality = %s  """, (str(nationality), ))
+  national_players = cursor.fetchall()
+  return {"nationality": national_players}
