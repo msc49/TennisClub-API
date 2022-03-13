@@ -1,9 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from pydantic import BaseModel
 from datetime import datetime
-from database import SessionLocal
+
 from typing import List
-import models
+
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import time
 
 app = FastAPI()
 
@@ -11,38 +14,28 @@ class Player(BaseModel): #serializer
   id: int
   first_name: str
   last_name: str
-  date_of_birth: datetime
   nationality: str
-  player_score: int
+  age: int
+  points: int
+  
+  
+conn = psycopg2.connect(host='localhost', database='tennis_club', user='Shahzaib', cursor_factory=RealDictCursor) #real dict cursor gives you the column names too of the database
+cursor = conn.cursor()
+print('Database Connection was successful')
 
-  class Config:
-    orm_model = True
+  
 
-
-db = SessionLocal()
-
-@app.get("/", response_model=List[Player],status_code=200)
-def get_players():
-  players = db.query(models.Player).all()
-  return players
-
-@app.get("/players/{player_id}")
-def get_a_player(player_id: int):
-  pass
+@app.get('/')
+def get_all():
+  return {"message": "hello world"}
 
 
-@app.post('/players')
-def create_player():
-  pass
-
-@app.put("/players/{player_id}")
-def update_player(player_id: int):
-  pass
-
-@app.delete("/players/{player_id}")
-def delete_player(player_id: int):
-  pass
-
+@app.post('/players',status_code=status.HTTP_201_CREATED)
+def create_player(player: Player):
+  cursor.execute(""" INSERT INTO players (first_name, last_name, age, nationality) VALUES (%s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.age, player.nationality))
+  # did not use f strings because that leaves us vulnerable to SQL injection
+  new_player = cursor.fetchone()
+  return {"data": new_player}
 
 
 
