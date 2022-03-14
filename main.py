@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from datetime import datetime
 
-from typing import List
+from typing import List, Optional
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -16,8 +16,8 @@ class Player(BaseModel): #serializer
   last_name: str
   nationality: str
   age: int
-  # points: int
-  # games_played: int
+  player_score: Optional[int] = 1200
+  games_played: Optional[int] = 0
   
   
 conn = psycopg2.connect(host='localhost', database='tennis_club', user='Shahzaib', cursor_factory=RealDictCursor) #real dict cursor gives you the column names too of the database
@@ -35,7 +35,7 @@ def get_players(player: Player):
 # --------------------------- ENDPOINT 1 ------------------------------------------------------------
 @app.post('/players',status_code=status.HTTP_201_CREATED)
 def create_player(player: Player):
-  cursor.execute(""" INSERT INTO players (first_name, last_name, age, nationality) VALUES (%s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.age, player.nationality))
+  cursor.execute(""" INSERT INTO players (first_name, last_name, age, nationality, player_score, games_played) VALUES (%s, %s, %s, %s, %s, %s) RETURNING *  """, (player.first_name, player.last_name, player.age, player.nationality, player.player_score, player.games_played))
   # did not use f strings because that leaves us vulnerable to SQL injection
   conn.commit()
   new_player = cursor.fetchone()
