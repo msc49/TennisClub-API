@@ -61,3 +61,17 @@ def get_players_by_nationality(rank_name: str, players: Player):
   cursor.execute(""" SELECT * FROM players WHERE rank_name = %s  """, (str(rank_name), ))
   national_players = cursor.fetchall()
   return {"{rank_name}": national_players}
+
+  # ----------------------------- ------------------------------------------------------------
+
+  # --------------------------- ENDPOINT 3 ------------------------------------------------------------
+
+class Match(BaseModel):
+  winner_id: int
+  loser_id: int
+
+
+
+@app.post("/matches/{winner_id}/{loser_id}")
+def create_match(players: Player, matches: Match, winner_id: int, loser_id: int):
+  pass
