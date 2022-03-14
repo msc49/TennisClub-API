@@ -16,8 +16,10 @@ CREATE TABLE players (player_id serial PRIMARY KEY,
 ALTER TABLE players ADD rank_name VARCHAR(50) NULL;
 
 CREATE TABLE matches(match_id serial PRIMARY KEY,
-winner_id INT REFERENCES players(player),
-loser_id INT  REFERENCES players(player)
+winner_id INT,
+loser_id INT,
+FOREIGN KEY(winner_id) REFERENCES players(player_id),
+FOREIGN KEY(loser_id) REFERENCES players(player_id)
 
 );
 
