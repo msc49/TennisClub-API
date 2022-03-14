@@ -11,7 +11,6 @@ import time
 app = FastAPI()
 
 class Player(BaseModel): #serializer
-  id: int
   first_name: str
   last_name: str
   nationality: str
@@ -25,7 +24,7 @@ cursor = conn.cursor()
 print('Database Connection was successful')
 
   
-
+# GET ALL
 @app.get('/')
 def get_players(player: Player):
   cursor.execute(""" SELECT * FROM players  """)
@@ -72,10 +71,12 @@ class Match(BaseModel):
 
 
 
+#creating a match
 @app.post("/matches")
 def create_match( matches: Match):
   cursor.execute(""" INSERT INTO matches (winner_id, loser_id) VALUES (%s,%s) RETURNING *
    """,
   (matches.winner_id, matches.loser_id))
   conn.commit()
-  
+  new_match = cursor.fetchone()
+  return {"data": new_match}
