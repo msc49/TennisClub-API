@@ -140,6 +140,4 @@ Note: rank_name is by default set to null. Once you do a get request searching b
 7. Create match
 ![screenshots](screenshots/create_match.png)
 
-### Final Note
 
-- Unfortunately due to some factors out of my control, i did not have the time to update the winners/losers points based off the matches and test that business logic. However, I will fix that sometime this week during my free time
